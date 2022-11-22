@@ -1,26 +1,31 @@
 <template>
-  <view class="scroll-view-container">
-    <!-- 左侧滚动部分 -->
-    <scroll-view scroll-y class="left-scroll-view" :style="{height: wh + 'px'}">
-      <block v-for="(item, i) in cateList" :key="i">
-        <view :class="['left-scroll-view-item', i === active?'active': '']" @click="activeChanged(i)">{{item.cat_name}}
-        </view>
-      </block>
-    </scroll-view>
-    <!-- 右侧滚动部分 -->
-    <scroll-view scroll-y class="right-scroll-view" :style="{height: wh + 'px'}" :scroll-top="scrollTop">
-      <view class="cate-lv2" v-for="(item2,i2) in cateLevel2" :key="i2">
-        <!-- 二级分类标题 -->
-        <view class="cate-lv2-title">/ {{item2.cat_name}} /</view>
-        <!-- 三级分类列表 -->
-        <view class="cate-lv3-list">
-          <view class="cate-lv3-item" v-for="(item3,i3) in item2.children" :key="i3" @click="gotoGoodsList(item3)">
-            <image :src="item3.cat_icon"></image>
-            <text>{{item3.cat_name}}</text>
+  <!-- 自定义搜索组件 -->
+  <view>
+    <my-search @click="gotoSearch"></my-search>
+    <view class="scroll-view-container">
+      <!-- 左侧滚动部分 -->
+      <scroll-view scroll-y class="left-scroll-view" :style="{height: wh + 'px'}">
+        <block v-for="(item, i) in cateList" :key="i">
+          <view :class="['left-scroll-view-item', i === active?'active': '']" @click="activeChanged(i)">
+            {{item.cat_name}}
+          </view>
+        </block>
+      </scroll-view>
+      <!-- 右侧滚动部分 -->
+      <scroll-view scroll-y class="right-scroll-view" :style="{height: wh + 'px'}" :scroll-top="scrollTop">
+        <view class="cate-lv2" v-for="(item2,i2) in cateLevel2" :key="i2">
+          <!-- 二级分类标题 -->
+          <view class="cate-lv2-title">/ {{item2.cat_name}} /</view>
+          <!-- 三级分类列表 -->
+          <view class="cate-lv3-list">
+            <view class="cate-lv3-item" v-for="(item3,i3) in item2.children" :key="i3" @click="gotoGoodsList(item3)">
+              <image :src="item3.cat_icon"></image>
+              <text>{{item3.cat_name}}</text>
+            </view>
           </view>
         </view>
-      </view>
-    </scroll-view>
+      </scroll-view>
+    </view>
   </view>
 </template>
 
@@ -38,8 +43,8 @@
     onLoad() {
       //获取设备信息
       const sysInfo = uni.getSystemInfoSync()
-      this.wh = sysInfo.windowHeight,
-        this.getCateList()
+      this.wh = sysInfo.windowHeight - 50
+      this.getCateList()
     },
     methods: {
       //获取分类数据
@@ -56,12 +61,18 @@
         this.active = i
         //重新为两级分类赋值
         this.cateLevel2 = this.cateList[i].children,
-        //重置滚动条位置 让 scrollTop 的值在 0 与 1 之间切换
+          //重置滚动条位置 让 scrollTop 的值在 0 与 1 之间切换
           this.scrollTop = this.scrollTop === 0 ? 1 : 0
       },
       gotoGoodsList(item3) {
         uni.navigateTo({
-          url:'/subpkg/goods_list/goods_list?cid=' + item3.cat_id
+          url: '/subpkg/goods_list/goods_list?cid=' + item3.cat_id
+        })
+      },
+      //搜索触发事件
+      gotoSearch() {
+        uni.navigateTo({
+          url: '/subpkg/search/search'
         })
       }
     }
