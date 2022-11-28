@@ -1,10 +1,14 @@
 {
   "pages": [{
     "path": "pages/home/home",
-    "style": {}
+    "style": {
+     
+    }
   }, {
     "path": "pages/my/my",
-    "style": {}
+    "style": {
+       "backgroundColor": "#fff"
+    }
 
   }, {
     "path": "pages/cart/cart",
