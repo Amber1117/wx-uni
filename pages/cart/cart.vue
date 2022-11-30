@@ -33,12 +33,12 @@
   import badgeMix from '@/mixins/tabbar-badge.js'
   import {
     mapState,
-    mapMutations
+    mapMutations,
   } from 'vuex'
   export default {
     mixins: [badgeMix],
     computed: {
-      ...mapState('m_cart', ['cart'])
+      ...mapState('m_cart', ['cart']),
     },
     data() {
       return {
